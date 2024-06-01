@@ -3,12 +3,12 @@ const { Todo } = require("../Model/TodoModel");
 exports.addTodo = async (req, res) => {
   try {
     const { text } = req.body;
-    console.log(text); // Log the received todo data for debugging
+    console.log(text);
     const newTodo = new Todo({ text });
     const savedTodo = await newTodo.save();
-    console.log(savedTodo); // Log the saved todo for debugging
+    console.log(savedTodo);
 
-    res.status(200).json({ savedTodo });
+    res.status(200).json({ message: "Todo Added Successfully", savedTodo });
   } catch (error) {
     console.error("Error adding todo:", error);
     res.status(500).json({ error: "Internal Server Error" });

@@ -5,6 +5,7 @@ import {
   deleteTodoAsync,
   fetchTodosAsync,
 } from "../TodoSlice";
+import { toast } from "react-toastify";
 
 export default function AddTodos() {
   const [input, setInput] = useState("");
@@ -15,6 +16,7 @@ export default function AddTodos() {
     if (input) {
       await dispatch(createTodoAsync({ text: input }));
       setInput("");
+      toast("Todo add successfully");
       dispatch(fetchTodosAsync());
     } else {
       alert("Please enter the value");
@@ -30,6 +32,7 @@ export default function AddTodos() {
   const removeTodo = (e, id) => {
     e.preventDefault();
     dispatch(deleteTodoAsync(id));
+    // toast("Todo remove successfully");
     dispatch(fetchTodosAsync());
     console.log(id);
   };
@@ -37,6 +40,7 @@ export default function AddTodos() {
   return (
     <div>
       <h1 className="text-white">Todo List</h1>
+      {/* <button onClick={notify}>Notify!</button> */}
       <form onSubmit={addTodoHandler} className="space-x-3 mt-12">
         <input
           type="text"
@@ -53,14 +57,6 @@ export default function AddTodos() {
         </button>
       </form>
       <div>
-        {/* <ul>
-          {todos.map((todo, index) => (
-            <li key={index} className="bg-black text-white">
-              {todo._id}
-              {" text => "} {todo.text}
-            </li>
-          ))}
-        </ul> */}
         <ul className="list-none ml-9 mr-9 ">
           {todos.map((todo) => (
             <li

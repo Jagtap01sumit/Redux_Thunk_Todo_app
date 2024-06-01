@@ -13,7 +13,7 @@ export const createTodoAsync = createAsyncThunk(
   async (todo) => {
     console.log(todo);
     const response = await createTodo(todo);
-    console.log(response, "res");
+    console.log(response.savedTodo, "res");
     return response.savedTodo;
   }
 );

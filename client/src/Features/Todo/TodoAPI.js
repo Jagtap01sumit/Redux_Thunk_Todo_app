@@ -9,7 +9,7 @@ export async function createTodo(userData) {
     });
 
     const data = await response.json();
-    // console.log(data, "res data");
+    console.log(data, "res data");
 
     return data;
   } catch (error) {
