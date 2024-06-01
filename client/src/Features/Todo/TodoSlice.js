@@ -17,13 +17,13 @@ export const createTodoAsync = createAsyncThunk(
     return response.savedTodo;
   }
 );
-// export const fetchTodosAsync = createAsyncThunk(
-//   "todos/fetchTodos",
-//   async () => {
-//     const response = await fetchTodos();
-//     return response;
-//   }
-// );
+export const fetchTodosAsync = createAsyncThunk(
+  "todos/fetchTodos",
+  async () => {
+    const response = await fetchTodos();
+    return response;
+  }
+);
 export const todoSlice = createSlice({
   name: "todos",
   initialState,
@@ -49,18 +49,18 @@ export const todoSlice = createSlice({
       .addCase(createTodoAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchTodosAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchTodosAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.todos = action.payload.todos;
+      })
+      .addCase(fetchTodosAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
-    // .addCase(fetchTodosAsync.pending, (state) => {
-    //   state.status = "loading";
-    // });
-    // .addCase(fetchTodosAsync.fulfilled, (state, action) => {
-    //   state.status = "idle";
-    //   state.todos = action.payload.todos;
-    // })
-    // .addCase(fetchTodosAsync.rejected, (state, action) => {
-    //   state.status = "failed";
-    //   state.error = action.error.message;
-    // });
   },
 });
 

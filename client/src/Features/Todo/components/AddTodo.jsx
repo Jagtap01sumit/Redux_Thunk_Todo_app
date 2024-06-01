@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodoAsync } from "../TodoSlice";
+import { createTodoAsync, fetchTodosAsync } from "../TodoSlice";
 
 export default function AddTodos() {
   const [input, setInput] = useState("");
@@ -11,17 +11,22 @@ export default function AddTodos() {
     if (input) {
       await dispatch(createTodoAsync({ text: input }));
       setInput("");
-      // dispatch(fetchTodosAsync());
+      dispatch(fetchTodosAsync());
     }
   };
 
   const todos = useSelector((state) => state.todos) || [];
 
-  console.log(todos);
+  console.log(todos[0]);
 
-  // useEffect(() => {
-  //   dispatch(fetchTodosAsync());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchTodosAsync());
+  }, [dispatch]);
+
+  const removeTodo = (e, id) => {
+    e.preventDefault();
+    console.log(id);
+  };
 
   return (
     <div>
@@ -42,13 +47,28 @@ export default function AddTodos() {
         </button>
       </form>
       <div>
-        {status === "loading" && <p>Loading...</p>}
-        {status === "failed" && <p>Error loading todos.</p>}
-        <ul>
+        {/* <ul>
           {todos.map((todo, index) => (
             <li key={index} className="bg-black text-white">
               {todo._id}
               {" text => "} {todo.text}
+            </li>
+          ))}
+        </ul> */}
+        <ul className="list-none ml-9 mr-9 ">
+          {todos.map((todo) => (
+            <li
+              className="mt-4 flex justify-between items-center bg-indigo-500 text-black px-4 py-2 rounded"
+              key={todo.id}
+            >
+              <div className="text-white">{todo.text}</div>
+              <div className="text-white">{todo._id}</div>
+              <button
+                onClick={(e) => removeTodo(e, todo._id)}
+                className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>

@@ -16,9 +16,9 @@ exports.addTodo = async (req, res) => {
 };
 exports.fetchTodoList = async (req, res) => {
   try {
-    const todos = await Todo.find(); // Fetch all todos from the database
+    const todos = await Todo.find();
     console.log(todos, "backtodo");
-    res.status(200).json(todos); // Send the todos as JSON response
+    res.status(200).json({ todos });
   } catch (error) {
     console.error("Error fetching todos:", error);
   }
