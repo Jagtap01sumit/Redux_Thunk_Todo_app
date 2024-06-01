@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createTodo, fetchTodos } from "./TodoAPI";
+import { createTodo, deleteTodo, fetchTodos } from "./TodoAPI";
 
 const initialState = {
   todos: [{}],
@@ -22,6 +22,16 @@ export const fetchTodosAsync = createAsyncThunk(
   async () => {
     const response = await fetchTodos();
     return response;
+  }
+);
+export const deleteTodoAsync = createAsyncThunk(
+  "todos/deleteTodo",
+  async (id) => {
+    console.log(id, "slice id");
+    const response = await deleteTodo(id);
+    console.log(response.data, "res data");
+    console.log(response, "res ");
+    return id;
   }
 );
 export const todoSlice = createSlice({
@@ -58,6 +68,19 @@ export const todoSlice = createSlice({
         state.todos = action.payload.todos;
       })
       .addCase(fetchTodosAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(deleteTodoAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteTodoAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+
+        state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+      })
+
+      .addCase(deleteTodoAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

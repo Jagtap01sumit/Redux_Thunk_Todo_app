@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { addTodo } = require("./controller/Todo");
+const { addTodo, deleteTodo } = require("./controller/Todo");
 require("dotenv").config();
 
 const bodyParser = require("body-parser");
@@ -34,6 +34,7 @@ server.get("/", (req, res) => {
 
 server.post("/addTodo", addTodo);
 server.get("/todos", fetchTodoList);
+server.delete("/:id", deleteTodo);
 
 server.listen(8080, () => {
   console.log("Server started on port 8080");

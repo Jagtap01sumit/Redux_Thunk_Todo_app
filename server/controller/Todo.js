@@ -23,3 +23,18 @@ exports.fetchTodoList = async (req, res) => {
     console.error("Error fetching todos:", error);
   }
 };
+
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await Todo.findByIdAndDelete(id);
+    if (!todo) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    res.status(204).end();
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

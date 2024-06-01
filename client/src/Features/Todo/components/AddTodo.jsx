@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodoAsync, fetchTodosAsync } from "../TodoSlice";
+import {
+  createTodoAsync,
+  deleteTodoAsync,
+  fetchTodosAsync,
+} from "../TodoSlice";
 
 export default function AddTodos() {
   const [input, setInput] = useState("");
@@ -12,12 +16,12 @@ export default function AddTodos() {
       await dispatch(createTodoAsync({ text: input }));
       setInput("");
       dispatch(fetchTodosAsync());
+    } else {
+      alert("Please enter the value");
     }
   };
 
   const todos = useSelector((state) => state.todos) || [];
-
-  console.log(todos[0]);
 
   useEffect(() => {
     dispatch(fetchTodosAsync());
@@ -25,6 +29,8 @@ export default function AddTodos() {
 
   const removeTodo = (e, id) => {
     e.preventDefault();
+    dispatch(deleteTodoAsync(id));
+    dispatch(fetchTodosAsync());
     console.log(id);
   };
 

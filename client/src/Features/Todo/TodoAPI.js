@@ -22,3 +22,16 @@ export const fetchTodos = async () => {
   console.log(response, "resooo");
   return response.json();
 };
+
+export const deleteTodo = async (id) => {
+  try {
+    // Send a DELETE request to your backend API endpoint
+    const response = await fetch(`http://localhost:8080/${id}`, {
+      method: "DELETE",
+    });
+    return response.data; // Optionally, return data from the response
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    throw error; // Optionally, rethrow the error to handle it elsewhere
+  }
+};
